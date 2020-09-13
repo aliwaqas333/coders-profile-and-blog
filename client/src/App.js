@@ -1,14 +1,19 @@
 import React from 'react'
-import logo from './logo.svg'
+import LoginRegister from './components/pages/LoginRegister.js'
+import AppBar from './components/layouts/AppBar'
+// import { Checkbox, Paper, Typography } from '@material-ui/core'
+import { Switch, Route } from 'react-router-dom'
 
-function App() {
+export default function App() {
     return (
-        <div className="App">
-            <header className="App-header">
-                <h1>Hi</h1>
-            </header>
-        </div>
+        <>
+            <AppBar />
+            <Switch>
+                <Route exact path="/signin">
+                    <LoginRegister signin={true} />
+                </Route>
+                <Route exact path="/signup" component={LoginRegister} />
+            </Switch>
+        </>
     )
 }
-
-export default App
