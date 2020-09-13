@@ -1,33 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Grid from '@material-ui/core/Grid'
 import { useForm } from 'react-hook-form'
-import Axios from 'axios'
+import _ from 'lodash'
+
+import { connect } from 'react-redux'
+import { registerUser } from '../../actions/authActions'
 
 import { Link } from 'react-router-dom'
 
-export default function SignUpForm({ styles }) {
-    const { register, handleSubmit, watch, errors } = useForm()
+const SignUpForm = ({ registerUser, styles, auth, errors }) => {
+    const { register, handleSubmit } = useForm()
     const [serverErrors, setserverErrors] = useState({})
     const onSubmit = (data) => {
-        submitData(data)
+        registerUser(data)
+        console.log('submitted next line')
     }
 
-    const submitData = (data) => {
-        setserverErrors({})
-        console.log('data', data)
-        Axios.post('/api/users/register', data)
-            .then((r) => {
-                console.log('request', r)
-            })
-            .catch((e) => {
-                setserverErrors(e.response.data)
-                console.log('e.response.data', e.response.data)
-            })
-    }
+    useEffect(() => {
+        setserverErrors(errors)
+    })
+
     return (
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
             <TextField
@@ -115,7 +112,7 @@ export default function SignUpForm({ styles }) {
             </Button>
             <Grid container>
                 <Grid item xs>
-                    <Link href="#" variant="body2">
+                    <Link to="#" variant="body2">
                         Forgot password?
                     </Link>
                 </Grid>
@@ -126,3 +123,13 @@ export default function SignUpForm({ styles }) {
         </form>
     )
 }
+SignUpForm.propType = {
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+}
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    errors: state.errors,
+})
+const mapDispatchToProps = () => ({})
+export default connect(mapStateToProps, { registerUser })(SignUpForm)
