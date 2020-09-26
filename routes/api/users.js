@@ -66,42 +66,48 @@ Router.post('/register', (req, res) => {
     })
 })
 
-// Login routing
-Router.post('/login', (req, res) => {
-    console.log('req', req.body)
+// @route   GET api/users/login
+// @desc    Login User / Returning JWT Token
+// @access  Public
+router.post('/login', (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body)
+
+    // Check Validation
     if (!isValid) {
-        res.status(400).json(errors)
+        return res.status(400).json(errors)
     }
-    const { email, password } = req.body
-    // lets find the user by model
+
+    const email = req.body.email
+    const password = req.body.password
+
+    // Find user by email
     User.findOne({ email }).then((user) => {
+        // Check for user
         if (!user) {
-            errors.email = 'Email not found'
+            errors.email = 'User not found'
             return res.status(404).json(errors)
         }
-        //  Check Password
+
+        // Check Password
         bcrypt.compare(password, user.password).then((isMatch) => {
             if (isMatch) {
-                //   res.status(200).json("Logged in successfully");
-                const payLoad = {
+                // User Matched
+                const payload = {
                     id: user.id,
                     name: user.name,
                     avatar: user.avatar,
-                    role: user.role,
-                } // create the jwt payload
-                //   user Matched
+                } // Create JWT Payload
+
+                // Sign Token
                 jwt.sign(
-                    payLoad,
-                    keys.sercet,
-                    { expiresIn: 86400 },
+                    payload,
+                    keys.secretOrKey,
+                    { expiresIn: 3600 },
                     (err, token) => {
-                        if (!err) {
-                            res.json({
-                                success: true,
-                                token: `Bearer ${token}`,
-                            })
-                        }
+                        res.json({
+                            success: true,
+                            token: 'Bearer ' + token,
+                        })
                     },
                 )
             } else {
@@ -109,10 +115,8 @@ Router.post('/login', (req, res) => {
                 return res.status(400).json(errors)
             }
         })
-        return false
     })
 })
-
 // @route GET       api/usrs/current
 // desc Return      current user
 // @access          Private
