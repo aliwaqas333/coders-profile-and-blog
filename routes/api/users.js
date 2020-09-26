@@ -69,7 +69,7 @@ Router.post('/register', (req, res) => {
 // @route   GET api/users/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
-router.post('/login', (req, res) => {
+Router.post('/login', (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body)
 
     // Check Validation
@@ -101,7 +101,7 @@ router.post('/login', (req, res) => {
                 // Sign Token
                 jwt.sign(
                     payload,
-                    'secret',
+                    keys.secretOrKey,
                     { expiresIn: 3600 },
                     (err, token) => {
                         res.json({
