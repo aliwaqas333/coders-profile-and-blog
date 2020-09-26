@@ -88,6 +88,7 @@ Router.post('/login', (req, res) => {
                     id: user.id,
                     name: user.name,
                     avatar: user.avatar,
+                    role: user.role,
                 } // create the jwt payload
                 //   user Matched
                 jwt.sign(

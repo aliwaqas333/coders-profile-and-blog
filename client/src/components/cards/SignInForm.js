@@ -1,37 +1,33 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Grid from '@material-ui/core/Grid'
 import { useForm } from 'react-hook-form'
-import Axios from 'axios'
-
+import { withRouter } from 'react-router'
+import { connect } from 'react-redux'
+import { loginUser } from '../../actions/authActions'
 import { Link } from 'react-router-dom'
 
-export default function SignInForm({ styles }) {
-    const { register, handleSubmit, watch, errors } = useForm()
+function SignInForm({ styles, errors, loginUser, history }) {
+    const { register, handleSubmit } = useForm()
     const [serverErrors, setserverErrors] = useState({})
     const onSubmit = (data) => {
-        submitData(data)
+        setserverErrors({})
+        loginUser(data, history)
     }
+
+    React.useEffect(() => {
+        setserverErrors(errors)
+    })
     const myTextField = {
         variant: 'outlined',
         margin: 'normal',
         fullWidth: true,
         required: true,
-    }
-    const submitData = (data) => {
-        setserverErrors({})
-        console.log('data', data)
-        Axios.post('/api/users/login', data)
-            .then((r) => {
-                console.log('request', r)
-            })
-            .catch((e) => {
-                setserverErrors(e.response.data)
-                console.log('e.response.data', e.response.data)
-            })
     }
 
     return (
@@ -43,7 +39,8 @@ export default function SignInForm({ styles }) {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                defaultValue="member@example7.com"
+                error={serverErrors.hasOwnProperty('email')}
+                defaultValue="member@example14.com"
                 inputRef={register}
                 type="email"
                 helperText={
@@ -56,6 +53,7 @@ export default function SignInForm({ styles }) {
                 label="Password"
                 type="password"
                 id="password"
+                error={serverErrors.hasOwnProperty('password')}
                 defaultValue="123456"
                 inputRef={register}
                 autoComplete="current-password"
@@ -90,3 +88,13 @@ export default function SignInForm({ styles }) {
         </form>
     )
 }
+SignInForm.propType = {
+    loginUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired,
+}
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    errors: state.errors,
+})
+export default connect(mapStateToProps, { loginUser })(withRouter(SignInForm))

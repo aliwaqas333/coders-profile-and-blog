@@ -7,6 +7,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    role: {
+        type: String,
+        default: 'admin',
+    },
     email: {
         type: String,
         required: true,

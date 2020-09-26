@@ -6,9 +6,11 @@ import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import { useHistory } from 'react-router-dom'
 
 import SignInForm from '../cards/SignInForm'
 import SignUpForm from '../cards/SignUpForm'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,8 +45,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function LoginRegister({ signin }) {
+function LoginRegister({ signin, auth }) {
+    let history = useHistory()
     const classes = useStyles()
+    React.useEffect(() => {
+        auth.isAuthenticated && history.push('/dashboard')
+    })
 
     return (
         <Grid container component="main" className={classes.root}>
@@ -76,3 +82,9 @@ export default function LoginRegister({ signin }) {
         </Grid>
     )
 }
+
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    errors: state.errors,
+})
+export default connect(mapStateToProps, {})(LoginRegister)

@@ -1,0 +1,61 @@
+.main-banner-wrapper {
+    /* width: 100%; */
+    height: calc(100vh - 128px);
+    background-image: url('../media/banner1.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.search-form-wrapper {
+    /* width: 80%; */
+    height: 200px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.search-form-wrapper form {
+    height: calc(100% - 15px);
+}
+.banner-text {
+    margin: 0 0 16px;
+    font-size: 30px;
+    /* line-height: 1.2; */
+}
+.property-card {
+    /* height: 300px; */
+    overflow: hidden;
+    padding: 0;
+    max-width: 850px !important;
+    display: flex;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    /* border: brown 5px solid; */
+    /* background-color: blueviolet; */
+}
+.property-card-left img {
+    height: 300px;
+
+    object-fit: cover;
+    overflow: hidden;
+}
+.property-card-right {
+    background-color: white;
+}
+.property-card-right .card-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+.property-card-right .card-title .subtitle {
+    font-size: 1.596rem;
+    letter-spacing: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
+.card-description {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 80px;
+}

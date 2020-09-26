@@ -6,19 +6,18 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Grid from '@material-ui/core/Grid'
 import { useForm } from 'react-hook-form'
-import _ from 'lodash'
+import { withRouter } from 'react-router'
 
 import { connect } from 'react-redux'
 import { registerUser } from '../../actions/authActions'
 
 import { Link } from 'react-router-dom'
 
-const SignUpForm = ({ registerUser, styles, auth, errors }) => {
+const SignUpForm = ({ registerUser, styles, auth, errors, history }) => {
     const { register, handleSubmit } = useForm()
     const [serverErrors, setserverErrors] = useState({})
     const onSubmit = (data) => {
-        registerUser(data)
-        console.log('submitted next line')
+        registerUser(data, history)
     }
 
     useEffect(() => {
@@ -132,4 +131,6 @@ const mapStateToProps = (state) => ({
     errors: state.errors,
 })
 const mapDispatchToProps = () => ({})
-export default connect(mapStateToProps, { registerUser })(SignUpForm)
+export default connect(mapStateToProps, { registerUser })(
+    withRouter(SignUpForm),
+)

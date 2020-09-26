@@ -18,6 +18,27 @@ Router.get('/test', (req, res) => {
 // @Route GET api/profile/all
 // @desc find all profiles
 // @access public
+// DONE - Adding a specific dish on its dishId
+
+// Router.post('/:dishId', authenticate.verifyUser, async (req, res) => {
+//     try {
+//         const dishId = req.params.dishId
+//         if (!mongoose.Types.ObjectId.isValid(dishId)) {
+//             throw new Error('id is invalid')
+//         }
+//         const dish = await Dish.findById(dishId)
+//         if (!dish) {
+//             throw new Error('Dish not found')
+//         }
+//         //Here we are initialing as well adding the dish by spread operator
+//         const fav = new Favorite({ ...req.body, dishes: dish })
+
+//         await fav.save()
+//         return await res.send(fav)
+//     } catch (e) {
+//         return res.send(e.message)
+//     }
+// })
 
 Router.get('/all', (req, res) => {
     // console.log('req', req)
